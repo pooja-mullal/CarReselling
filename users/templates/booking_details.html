@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <!-- basic -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- mobile metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+      <!-- site metas -->
+      <title>CarResell</title>
+      <meta name="keywords" content="">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <!-- bootstrap css -->
+      <link rel="stylesheet" type="text/css" href="/static/assets/css/bootstrap.min.css">
+      <!-- style css -->
+      <link rel="stylesheet" type="text/css" href="/static/assets/css/style.css">
+      <!-- Responsive-->
+      <link rel="stylesheet" href="/static/assets/css/responsive.css">
+      <!-- fevicon -->
+      <link rel="icon" href="/static/assets/images/fevicon.png" type="image/gif" />
+      <!-- font css -->
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+      <!-- Scrollbar Custom CSS -->
+      <link rel="stylesheet" href="/static/assets/css/jquery.mCustomScrollbar.min.css">
+      <!-- Tweaks for older IEs-->
+      <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+      <style>
+        .form-control{
+            line-height: 2.5 !important;
+        }
+        .gallery_img img {
+            width: 100%;
+            height: 250px; /* Fixed height */
+            object-fit: cover; /* Ensure the image covers the entire area */
+        }
+      </style>
+   </head>
+   <body>
+      <!-- header section start -->
+      <div class="header_section">
+         <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand"href="index.html" style="color: white;font-size: 30px;"><b>CarResell</b></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                   <ul class="navbar-nav ml-auto">
+                      <li class="nav-item">
+                         <a class="nav-link" href="/user_db">Home</a>
+                      </li>
+                      <li class="nav-item">
+                         <a class="nav-link" href="/booking_details">Booking Details</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="/liked_car">Liked cars</a>
+                     </li>
+                     
+                      <li class="nav-item">
+                         <a class="nav-link" href="/user_logout">Log out</a>
+                      </li>
+                   </ul>
+                   <form class="form-inline my-2 my-lg-0">
+                   </form>
+                </div>
+             </nav>
+         </div>
+      </div>
+      <!-- header section end -->
+   
+      <!-- banner section start --> 
+     
+      <!-- banner section end -->
+      <!-- about section start -->
+      <div class="about_section layout_padding">
+         <div class="container">
+            <div class="about_section_2">
+               <div class="row">
+                 
+                <div class="col-md-12" style="margin-bottom: 40px;"> 
+                    <div class="about_taital_box">
+                        <h1 class="about_taital">Your <span style="color: #fe5b29;">Bookings</span></h1>
+                      
+                    </div>
+               </div>
+
+               <br><br>
+            </div>
+         </div>
+      </div>
+      <!-- about section end -->
+      
+    <!-- gallery section start -->
+    <div class="gallery_section layout_padding">
+        <div class="container">
+            <div class="row">
+               
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Car Name</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Year</th>
+                                <th scope="col">Booking Date</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in data %}
+                            <tr>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td>{{ booking.car_id.car_name }}</td>
+                                <td>{{ booking.car_id.price }}</td>
+                                <td>{{ booking.car_id.year }}</td>
+                                <td>{{ booking.created_at }}</td>
+                                <td>{{ booking.status }}</td>
+                                <td>
+                                    {% if booking.status == 'pending' %}
+                                        <button class="btn btn-warning" onclick="cancelBooking({{ booking.id }})" {% if not booking.status == 'pending' %}disabled{% endif %}>Cancel</button>
+                                    {% else %}
+                                        <button class="btn btn-success" disabled>Confirmed</button>
+                                    {% endif %}
+                                   
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+
+    <script>
+        function cancelBooking(bookingId) {
+            // Confirm with the user before proceeding
+            if (confirm('Are you sure you want to cancel this booking?')) {
+                // AJAX request to cancel the booking
+                fetch(`/cancel_booking/${bookingId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',  // Include CSRF token for security
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ booking_id: bookingId })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Booking canceled successfully!');
+                        // Reload the page or update UI as needed
+                        window.location.reload();  // Example: Reload the page after cancellation
+                    } else {
+                        throw new Error('Failed to cancel booking');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error canceling booking:', error);
+                    alert('Failed to cancel booking. Please try again later.');
+                });
+            }
+        }
+    </script>
+    
+      <!-- gallery section end -->
+      <!-- choose section start -->
+  
+      <!-- choose section end -->
+      <!-- client section start -->
+     
+      <!-- client section end -->
+      <!-- contact section start -->
+   
+      <!-- contact section end -->
+      <!-- footer section start -->
+   
+     
+      <!-- footer section end -->
+      <!-- copyright section start -->
+      
+      <!-- copyright section end -->
+      <!-- Javascript files-->
+      <script src="/static/assets/js/jquery.min.js"></script>
+      <script src="/static/assets/js/popper.min.js"></script>
+      <script src="/static/assets/js/bootstrap.bundle.min.js"></script>
+      <script src="j/static/assets/s/jquery-3.0.0.min.js"></script>
+      <script src="/static/assets/js/plugin.js"></script>
+      <!-- sidebar -->
+      <script src="/static/assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+      <script src="/static/assets/js/custom.js"></script>
+   </body>
+</html>

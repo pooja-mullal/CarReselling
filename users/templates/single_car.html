@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <!-- basic -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- mobile metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+      <!-- site metas -->
+      <title>CarResell</title>
+      <meta name="keywords" content="">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <!-- bootstrap css -->
+      <link rel="stylesheet" type="text/css" href="/static/assets/css/bootstrap.min.css">
+      <!-- style css -->
+      <link rel="stylesheet" type="text/css" href="/static/assets/css/style.css">
+      <!-- Responsive-->
+      <link rel="stylesheet" href="/static/assets/css/responsive.css">
+      <!-- fevicon -->
+      <link rel="icon" href="/static/assets/images/fevicon.png" type="image/gif" />
+      <!-- font css -->
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+      <!-- Scrollbar Custom CSS -->
+      <link rel="stylesheet" href="/static/assets/css/jquery.mCustomScrollbar.min.css">
+      <!-- Tweaks for older IEs-->
+      <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.17/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.17/dist/sweetalert2.all.min.js"></script>
+      <style>
+        .form-control{
+            line-height: 2.5 !important;
+        }
+        .gallery_img img {
+            width: 100%;
+            height: 250px; /* Fixed height */
+            object-fit: cover; /* Ensure the image covers the entire area */
+        }
+      </style>
+   </head>
+   <body>
+      <!-- header section start -->
+      <div class="header_section">
+         <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+               <a class="navbar-brand"href="/admin_login" style="color: white;font-size: 30px;"><b>CarResell</b></a>
+               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>
+               </button>
+               <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav ml-auto">
+                     <li class="nav-item">
+                        <a class="nav-link" href="/user_db">Home</a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="/booking_details">Booking Details</a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="/liked_car">Liked cars</a>
+                     </li>
+
+                     <li class="nav-item">
+                        <a class="nav-link" href="/user_logout">Log out</a>
+                     </li>
+                  </ul>
+                  <form class="form-inline my-2 my-lg-0">
+                  </form>
+               </div>
+            </nav>
+         </div>
+      </div>
+      <!-- header section end -->
+
+      <!-- banner section start -->
+
+      <!-- banner section end -->
+      <!-- about section start -->
+      <div class="about_section layout_padding">
+         <div class="container">
+            <div class="about_section_2">
+               <div class="row">
+
+                <div class="col-md-12" style="margin-bottom: 40px;">
+                    <div class="about_taital_box">
+                        <h1 class="about_taital">Car<span style="color: #fe5b29;">Details</span></h1>
+                        <p>Discover the features and specifications of this bike.</p>
+                    </div>
+                </div>
+
+               <br><br>
+            </div>
+         </div>
+      </div>
+      <!-- about section end -->
+
+
+
+    <div class="about_section layout_padding">
+        <div class="container">
+           <div class="about_section_2">
+              <div class="row">
+                 <div class="col-md-6">
+                    <div class="image_iman"><img src="/{{data.image}}" class="about_img"></div>
+                 </div>
+                 <div class="col-md-6">
+                    <div class="about_taital_box">
+                       <h1 class="about_taital">{{data.bike_name}} <span style="color: #fe5b29;"></span></h1>
+                      <p class="about_text">Price: {{data.price}} &nbsp;&nbsp; Year : {{data.year}}</p>
+                       <p class="about_text">{{data.description}} </p>
+                       <div class="readmore_btn">
+                        <a href="#" data-toggle="modal" data-target="#bookNowModal">Book Now</a>
+                    </div>
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </div>
+     </div>
+
+
+     <div class="modal fade" id="bookNowModal" tabindex="-1" role="dialog" aria-labelledby="bookNowModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bookNowModalLabel">Book Now</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" value="{{user_details.username}}" name="name" placeholder="Enter your name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Email</label>
+                            <input type="email" class="form-control" value="{{user_details.email}}" name="email" id="phone" placeholder="Enter your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="text"  class="form-control" name="phone_no" id="phone" placeholder="Enter your phone number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Address</label>
+                        <textarea class="form-control" rows="4" name="address"></textarea>
+                    </div>
+                        <button type="submit"  class="btn btn-primary" style="background-color: #fe5b29;;">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          {% if success %}
+          Swal.fire({
+              title: 'Success!',
+              text: 'Your booking has been successfully processed.',
+              icon: 'success',
+              confirmButtonText: 'OK'
+          });
+          {% endif %}
+      });
+  </script>
+      <!-- copyright section end -->
+      <!-- Javascript files-->
+      <script src="/static/assets/js/jquery.min.js"></script>
+      <script src="/static/assets/js/popper.min.js"></script>
+      <script src="/static/assets/js/bootstrap.bundle.min.js"></script>
+      <script src="j/static/assets/s/jquery-3.0.0.min.js"></script>
+      <script src="/static/assets/js/plugin.js"></script>
+      <!-- sidebar -->
+      <script src="/static/assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+      <script src="/static/assets/js/custom.js"></script>
+   </body>
+</html>

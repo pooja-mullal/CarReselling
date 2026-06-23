@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <!-- basic -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- mobile metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+      <!-- site metas -->
+      <title>CarResell</title>
+      <meta name="keywords" content="">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <!-- bootstrap css -->
+      <link rel="stylesheet" type="text/css" href="/static/assets/css/bootstrap.min.css">
+      <!-- style css -->
+      <link rel="stylesheet" type="text/css" href="/static/assets/css/style.css">
+      <!-- Responsive-->
+      <link rel="stylesheet" href="/static/assets/css/responsive.css">
+      <!-- fevicon -->
+      <link rel="icon" href="/static/assets/images/fevicon.png" type="image/gif" />
+      <!-- font css -->
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+      <!-- Scrollbar Custom CSS -->
+      <link rel="stylesheet" href="/static/assets/css/jquery.mCustomScrollbar.min.css">
+      <!-- Tweaks for older IEs-->
+      <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+      <style>
+        .form-control{
+            line-height: 2.5 !important;
+        }
+        .gallery_img img {
+            width: 100%;
+            height: 250px; /* Fixed height */
+            object-fit: cover; /* Ensure the image covers the entire area */
+        }
+        .like-icon {
+    cursor: pointer;
+    color: white;
+    font-size: 19px; /* Increase the font size */
+    -webkit-text-stroke: 1px black; /* Black border for unfilled heart */
+    stroke: black;
+}
+
+.like-icon.liked {
+    color: red;
+}
+      </style>
+   </head>
+   <body>
+      <!-- header section start -->
+      <div class="header_section">
+         <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+               <a class="navbar-brand"href="index.html" style="color: white;font-size: 30px;"><b>CarResell</b></a>
+               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>
+               </button>
+               <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav ml-auto">
+                     <li class="nav-item">
+                        <a class="nav-link" href="/user_db">Home</a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="/booking_details">Booking Details</a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="/liked_car">Liked cars</a>
+                     </li>
+                    
+                     <li class="nav-item">
+                        <a class="nav-link" href="/user_logout">Log out</a>
+                     </li>
+                  </ul>
+                  <form class="form-inline my-2 my-lg-0">
+                  </form>
+               </div>
+            </nav>
+         </div>
+      </div>
+      <!-- header section end -->
+   
+      <!-- banner section start --> 
+     
+      <!-- banner section end -->
+      <!-- about section start -->
+      <div class="about_section layout_padding">
+         <div class="container">
+            <div class="about_section_2">
+               <div class="row">
+                 
+                <div class="col-md-12" style="margin-bottom: 40px;"> 
+                    <div class="about_taital_box">
+                        <h1 class="about_taital">Available <span style="color: #fe5b29;">Cars</span> - <p>Explore our collection of cars available for purchase.</p></h1>
+                      
+                    </div>
+               </div>
+
+               <br><br>
+            </div>
+         </div>
+      </div>
+      <!-- about section end -->
+      <div class="search_section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="search_taital">Search Your Best Cars</h1>
+                    
+                    <div class="container">
+                        <div class="select_box_section">
+                            <div class="select_box_main">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <form method="GET" action="{% url 'user_db' %}">
+                                            <input type="text" class="form-control" placeholder="Car Name" name="query" value="{{ query }}">
+                                    </div>
+                                    <div class="col-md-3">
+                                            <input type="number" class="form-control" placeholder="Price" name="price" value="{{ price }}">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="search_btn">
+                                            <button type="submit" class="btn btn-primary">Search Now</button>
+                                        </div>
+                                    </div>
+                                        </form>
+                                    <div class="col-md-3">
+                                        <div class="refresh_btn" style="margin-left: 240px;">
+                                            <a href="{% url 'user_db' %}" class="btn btn-secondary">View all</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- select box section end -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- gallery section start -->
+    <div class="gallery_section layout_padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="gallery_taital">Our Best Offers</h1>
+                </div>
+            </div>
+            <div class="gallery_section_2">
+                <div class="row">
+                    {% for bike in data %}
+                    <div class="col-md-4" style="margin-bottom: 15px;">
+                        <div class="gallery_box">
+                            <div class="gallery_img">
+                                <img src="{{ bike.image.url }}" alt="{{ bike.car_name }}" class="img-fluid">
+                            </div>
+                            <h3 class="types_text">{{ bike.car_name }}</h3>
+                            <p class="looking_text">Price: {{ bike.price }}</p>
+                            <p style="text-align: center;">{{ bike.year }}</p>
+                            <div class="read_bt"><a href="/single_car/{{ bike.id }}/{{ bike.user_id_id }}">View Details</a></div>
+                            {% if bike.is_liked %}
+                            <i class="fa fa-heart like-icon liked" data-bike-id="{{ bike.id }}"></i>
+                            {% else %}
+                            <i class="fa fa-heart like-icon" data-bike-id="{{ bike.id }}"></i>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('.like-icon').click(function() {
+            var icon = $(this);
+            var bikeId = icon.data('bike-id');
+            var url = icon.hasClass('liked') ? '/unlike_car/' : '/like_car/';
+            
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: {
+                    bike_id: bikeId,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    if (response.status === 'liked') {
+                        icon.addClass('liked');
+                    } else if (response.status === 'unliked') {
+                        icon.removeClass('liked');
+                    }
+                }
+            });
+        });
+    });
+    </script>
+    
+   
+    
+      <!-- gallery section end -->
+      <!-- choose section start -->
+  
+      <!-- choose section end -->
+      <!-- client section start -->
+     
+      <!-- client section end -->
+      <!-- contact section start -->
+   
+      <!-- contact section end -->
+      <!-- footer section start -->
+   
+     
+      <!-- footer section end -->
+      <!-- copyright section start -->
+      
+      <!-- copyright section end -->
+      <!-- Javascript files-->
+      <script src="/static/assets/js/jquery.min.js"></script>
+      <script src="/static/assets/js/popper.min.js"></script>
+      <script src="/static/assets/js/bootstrap.bundle.min.js"></script>
+      <script src="j/static/assets/s/jquery-3.0.0.min.js"></script>
+      <script src="/static/assets/js/plugin.js"></script>
+      <!-- sidebar -->
+      <script src="/static/assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+      <script src="/static/assets/js/custom.js"></script>
+   </body>
+</html>
